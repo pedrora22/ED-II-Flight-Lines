@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <title>{% block title %}ED2FlightLines{% endblock %}</title>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-4">Available Flights</h1>
+            <div>
+                <a href="{{ url_for('passenger.profile') }}" class="btn btn-primary" data-mdb-ripple-init>Profile</a>
+                <a type="button" href="{{ url_for('main.login') }}" class="btn btn-secondary" data-mdb-ripple-init>Logout</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                Current Flights
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Origin</th>
+                            <th>Destination</th>
+                            <th>Miles</th>
+                            <th>Plane Model</th>
+                            <th>Price</th>
+                            <th>Seats</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for flight_id, flight in flights.items() %}
+                        <tr>
+                            <td>{{ flight_id }}</td>
+                            <td>{{ flight.origin }}</td>
+                            <td>{{ flight.destination }}</td>
+                            <td>{{ flight.airline_miles}}</td>
+                            <td>{{ flight.plane_model }}</td>
+                            <td>$ {{ "%.2f"|format(flight.price) }}</td>
+                            <td>{{ flight.available_seats }}</td>
+                            <td>
+                                <a href="{{ url_for('passenger.book_flight', flight_id=flight_id) }}" class="btn btn-primary btn-sm">
+                                    Book
+                                </a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center">No flights registered.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

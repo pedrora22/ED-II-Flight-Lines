@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-a">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - User Management</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>User Management</h1>
+            <a href="{{ url_for('admin.admin_home') }}" class="btn btn-secondary">Back to Flights</a>
+        </div>
+
+        <!-- Mensagens Flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Formulário para Adicionar Usuário -->
+        <div class="card mb-4">
+            <div class="card-header">Add New User</div>
+            <div class="card-body">
+                <form action="{{ url_for('admin.add_user') }}" method="POST">
+                    <div class="row">
+                        <div class="col-md-4 mb-3"><input type="email" class="form-control" name="email" placeholder="Email" required></div>
+                        <div class="col-md-3 mb-3"><input type="password" class="form-control" name="password" placeholder="Password" required></div>
+                        <div class="col-md-3 mb-3">
+                            <select name="role" class="form-select">
+                                <option value="passenger">Passenger</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2"><button type="submit" class="btn btn-primary">Add User</button></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tabela de Usuários -->
+        <div class="card">
+            <div class="card-header">Current Users</div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead><tr><th>Email</th><th>Role</th><th>Actions</th></tr></thead>
+                    <tbody>
+                        {% for email, data in users.items() %}
+                        <tr>
+                            <td>{{ email }}</td>
+                            <td>{{ data.role }}</td>
+                            <td>
+                                <a href="{{ url_for('admin.delete_user', email=email) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?');" method="POST">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

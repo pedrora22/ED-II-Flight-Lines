@@ -10,16 +10,11 @@
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="mb-4">Flight Management</h1>
-            <a type="button" href="{{ url_for('admin.admin_users') }}" class="btn btn-primary" data-mdb-ripple-init>Go to User Management</a>
+            <div>
+                <a type="button" href="{{ url_for('admin.admin_users') }}" class="btn btn-primary" data-mdb-ripple-init>Go to User Management</a>
+                <a type="button" href="{{ url_for('main.login') }}" class="btn btn-secondary" data-mdb-ripple-init>Logout</a>
+            </div>
         </div>
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
 
         <div class="card mb-4">
             <div class="card-header">
@@ -38,10 +33,10 @@
                             <input type="text" class="form-control" name="destination" placeholder="Destination" required>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <input type="datetime-local" class="form-control" name="departure_time" placeholder="Departure" required>
+                            <input type="number" class="form-control" name="airline_miles" placeholder="Airline Miles" required>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <input type="datetime-local" class="form-control" name="arrival_time" placeholder="Arrival" required>
+                            <input type="text" class="form-control" name="plane_model" placeholder="Plane Model" required>
                         </div>
                         <div class="col-md-2 mb-3">
                             <input type="number" step="0.01" class="form-control" name="price" placeholder="Price" required>
@@ -68,8 +63,8 @@
                             <th>ID</th>
                             <th>Origin</th>
                             <th>Destination</th>
-                            <th>Departure</th>
-                            <th>Arrival</th>
+                            <th>Airline Miles</th>
+                            <th>Plane Model</th>
                             <th>Price</th>
                             <th>Seats</th>
                             <th>Actions</th>
@@ -81,8 +76,8 @@
                             <td>{{ flight_id }}</td>
                             <td>{{ flight.origin }}</td>
                             <td>{{ flight.destination }}</td>
-                            <td>{{ flight.departure_time }}</td>
-                            <td>{{ flight.arrival_time }}</td>
+                            <td>{{ flight.airline_miles }}</td>
+                            <td>{{ flight.plane_model }}</td>
                             <td>$ {{ "%.2f"|format(flight.price) }}</td>
                             <td>{{ flight.available_seats }}</td>
                             <td>

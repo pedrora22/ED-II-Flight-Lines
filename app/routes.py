@@ -1,6 +1,6 @@
 from flask import Flask, render_template, Blueprint, session, redirect, url_for, flash, request
 from functools import wraps
-from .data import USERS
+from .data import find_user_by_email
 
 
 app = Flask(__name__)
@@ -33,20 +33,15 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        
-        user_data = USERS.get(email)
-
+        user_data = find_user_by_email(email)
         if user_data and user_data['password'] == password:
             session['user'] = email
             session['role'] = user_data['role']
-            flash('Login bem-sucedido!', 'success')
-
+            flash('Login successful!', 'success')
             if user_data['role'] == 'admin':
                 return redirect(url_for('admin.admin_home'))
             else:
                 return redirect(url_for('passenger.passenger_home'))
         else:
-            flash('Credenciais inválidas. Por favor, tente novamente.', 'danger')
-    
+            flash('Invalid credentials. Please try again.', 'danger')
     return render_template('login.html')
-
